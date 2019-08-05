@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<style>
+    .div {
+        float: left;
+        margin-right: 5%;
+        border: 1px solid red;
+        padding: 10px;
+    }
+</style>
+<script>
+    $(function () {
+        $("#add").click(function () {
+            ajaxPost("/addUser", {userName: $("#add-username").val(), password: $("#add-password").val()}, function () {
+                alert("插入成功");
+            })
+        })
+        $("#delete").click(function () {
+            ajaxPost("/deleteUser", {userId: $("#delete-user-id").val()}, function () {
+                alert("删除成功");
+            })
+        })
+        $("#update").click(function () {
+            ajaxPost("/updateUser", {
+                userId: $("#update-userid").val(),
+                userName: $("#update-username").val(),
+                password: $("#update-password").val()
+            }, function () {
+                alert("修改成功");
+            })
+        })
+
+        $("#select").click(function () {
+            ajaxPost("/selectUser", {userId: $("#select-userid").val()}, function (data) {
+                alert(data.userName + " " + data.password);
+            })
+        })
+    })
+
+    function ajaxPost(url, data, fun) {
+        $.ajax({
+            url: url,
+            type: "post",
+            data: data,
+            dataType: "json",
+            success: fun,
+            error: function () {
+                alert("请求错误");
+            }
+        })
+    }
+</script>
+<body>
+<div class="div">
+    <p>增：输入用户名</p><input id="add-username" type="text">
+    <p>增：输入密码</p><input id="add-password" type="text">
+    <button id="add">增</button>
+</div>
+<div class="div">
+    <p>删：输入要删除的用户id</p><input id="delete-user-id" type="text">
+    <button id="delete">删</button>
+</div>
+
+<div class="div">
+    <p>改：输入id</p><input id="update-userid" type="text">
+    <p>改：输入新的username</p><input id="update-username" type="text">
+    <p>改：输入新的password</p><input id="update-password" type="text">
+    <button id="update">改</button>
+</div>
+
+<div class="div">
+    <p>查：输入id</p><input id="select-userid" type="text">
+    <button id="select">查</button>
+</div>
+
+
+</body>
+</html>
